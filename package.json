@@ -1,0 +1,22 @@
+{
+  "name": "stand-up",
+  "version": "1.0.0",
+  "description": "A simple app that tracks how long you've been sitting and standing throughout the day",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/austinmalmberg/stand-up.git"
+  },
+  "author": "Austin Malmberg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/austinmalmberg/stand-up/issues"
+  },
+  "homepage": "https://github.com/austinmalmberg/stand-up#readme",
+  "dependencies": {
+    "electron": "^5.0.1"
+  }
+}
