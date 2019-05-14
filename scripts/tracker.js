@@ -1,81 +1,78 @@
 const Timer = require('./timer');
-const log = require('./logger');
+const { log, setThreshold } = require('./logger');
+
+const states = {
+  SITTING: 0,
+  STANDING: 1,
+  PAUSED: 2
+}
 
 class OrientationTracker {
-  constructor(state, status) {
-    this.state = state || this.states.SITTING;
-    this.status = status || this.statuses.STARTED;
-    this.stateTimer = new Timer();
+  constructor(state, started) {
+    this.state = state || states.SITTING;
+    this.started = started || true;
+    this.stateTimer = (this.started ? new Timer() : null);
 
-    this.prevActiveState = null;
-
-    log.setThreshold(5000);
+    setThreshold(5000);
   }
 
   start() {
     // do nothing if already started
-    if (this.status == this.statuses.STARTED) return false;
+    if (this.started) {
+      console.log('already started!');
+      return false;
+    }
 
-    this.status = this.statuses.STARTED;
+    this.started = true;
     this.stateTimer = new Timer();
+
+    console.log('started.');
     return true;
   }
 
   stop() {
     // do nothing if not started
-    if (this.status != this.statuses.STARTED)
+    if (!this.started) {
+      console.log('already stopped!');
       return false;
-
-    _logState();
-    this.stateTimer = null;
-    return true;
-  }
-
-  flipActiveState() {
-    if(this.state == this.states.PAUSED) return false;
-
-    _setPrevActiveState();
-    if (this.state == this.states.SITTING)
-      this.state = this.states.STANDING;
-
-    else if (this.state == this.states.STANDING)
-      this.state = this.states.SITTING;
-
-    return true;
-  }
-
-  pause() {
-    if(this.state == this.states.PAUSED) return false;
-
-    _logState();
-    _setPrevActiveState();
-    this.state = this.states.PAUSED;
-    return true;
-  }
-
-  static get states() {
-    return {
-      SITTING: 0,
-      STANDING: 1,
-      PAUSED: 2
     }
+
+    if (this.stateTimer)
+      this._logState();
+
+    this.started = false;
+    this.stateTimer = null;
+
+    console.log('stopped.');
+    return true;
   }
 
-  static get statuses() {
-    return {
-      STARTED: 0,
-      STOPPED: 1
-    };
+  setState(newState) {
+    if (!this.started) {
+      console.log('must start before setting state.');
+      return false;
+    }
+
+    if (this.state === newState) {
+      console.log('already in that state.');
+      return false;
+    }
+
+    this._logState();
+    this.state = newState;
+    this.stateTimer = new Timer();
+    console.log('done.');
+    return true;
+  }
+
+  timeInState() {
+    return this.stateTimer.elapsed();
   }
 
   _logState() {
-    logger.log(this.state, this.stateTimer);
-  }
-
-  _setPrevActiveState() {
-    if(this.state != this.states.PAUSED)
-      this.prevActiveState = this.state;
+    if(this.started)
+      log(this.state, this.stateTimer);
   }
 }
 
-module.exports = OrientationTracker;
+module.exports = { states, OrientationTracker };

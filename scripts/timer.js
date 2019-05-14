@@ -2,16 +2,16 @@
 class Timer {
   constructor(start, stop) {
     this.start = start || Date.now();
-    this.end = stop || null;
+    this.stop = stop || null;
   }
 
   running() {
-    return this.end === null;
+    return this.stop === null;
   }
 
   stop() {
-    if (!this.end) {
-      this.end = Date.now();
+    if (!this.stop) {
+      this.stop = Date.now();
       return true;
     }
 
@@ -19,19 +19,16 @@ class Timer {
   }
 
   elapsed() {
-    if (this.end) return this.end - this.start;
+    if (this.stop) return this.stop - this.start;
 
     return Date.now() - this.start;
   }
 
-  static toSecs(millis=undefined) {
-    if (millis)
-      return millis / 1000;
+  elapsedFormatted() {
+    let formatted = {};
+    let time = elapsed();
 
-    else if (this.start)
-      return this.elapsed() / 1000;
-
-    return undefined;
+    formatted.secs = Math.floor(time / 1000);
   }
 }
 

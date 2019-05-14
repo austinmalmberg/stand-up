@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <title>Stand Up</title>
+  </head>
+  <body>
+    <div class="wrapper c-flex flex-col flex-around">
+
+      <div class="timers c-flex flex-around">
+
+        <div class="timer-container sitting">
+          <h3>Sitting</h3>
+          <p class="timer">00:00:00</p>
+        </div>
+
+        <div class="timer-container standing">
+          <h3>Sitting</h3>
+          <p class="timer">00:00:00</p>
+        </div>
+
+      </div>
+
+      <div class="button-container orientations c-flex">
+          <div id="sit" class="button orientation">Sit</div>
+          <div id="stand" class="button orientation">Stand</div>
+      </div>
+
+      <div class="button-container time-controls c-flex">
+        <div id="start" class="button time-control">Start</div>
+        <div id="pause" class="button orientation">Pause</div>
+        <div id="stop" class="button time-control">Stop</div>
+      </div>
+    </div>
+
+    <script src="scripts/addButtonListeners.js"></script>
+  </body>
+</html>
