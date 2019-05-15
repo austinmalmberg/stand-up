@@ -1,78 +1,75 @@
 const Timer = require('./timer');
-const { log, setThreshold } = require('./logger');
 
-const states = {
-  SITTING: 0,
-  STANDING: 1,
-  PAUSED: 2
-}
+const states = ['sit', 'stand', 'pause'];
 
-class OrientationTracker {
-  constructor(state, started) {
-    this.state = state || states.SITTING;
-    this.started = started || true;
-    this.stateTimer = (this.started ? new Timer() : null);
+class Tracker {
 
-    setThreshold(5000);
+  constructor(current) {
+    this.stateTimers = {
+      sit: new Timer(),
+      stand: new Timer(),
+      pause: new Timer()
+    }
+    this.current = current || states[0];
+    this.running = false;
   }
 
-  start() {
-    // do nothing if already started
-    if (this.started) {
-      console.log('already started!');
-      return false;
+  bindCallback(elementId, callback) {
+
+    if (!states.includes(elementId)) {
+      console.log(`I don't know how you did it, but ${elementId} isn't one of the states.`);
+      return;
     }
 
-    this.started = true;
-    this.stateTimer = new Timer();
-
-    console.log('started.');
-    return true;
+    console.log(`${elementId} button bound with ${callback}`);
+    this.stateTimers[elementId].bind(callback);
   }
 
-  stop() {
-    // do nothing if not started
-    if (!this.started) {
-      console.log('already stopped!');
-      return false;
+  handleState(elementId) {
+
+    if (!this.running) {
+      console.log(`Timers aren't running!`);
+      return;
+    }
+    else if (elementId == this.current) {
+      console.log(`Already using ${this.current} timer.`);
+      return;
+    }
+    else if (!states.includes(elementId)) {
+      console.log(`I don't know how you did it, but ${elementId} isn't one of the states.`);
+      return;
     }
 
-    if (this.stateTimer)
-      this._logState();
+    // stop the current timer
+    this.stateTimers[this.current].stop();
 
-    this.started = false;
-    this.stateTimer = null;
-
-    console.log('stopped.');
-    return true;
+    // replace the current timer then start it
+    this.current = elementId;
+    this.stateTimers[this.current].start();
   }
 
-  setState(newState) {
-    if (!this.started) {
-      console.log('must start before setting state.');
-      return false;
+  handleTimer(elementId) {
+
+    if (elementId === 'start' && this.running) {
+      console.log(`${this.current} timer is already running!`);
+      return;
+    }
+    else if (elementId === 'stop' && !this.running) {
+      console.log(`${this.current} timer already stopped!`);
+      return;
     }
 
-    if (this.state === newState) {
-      console.log('already in that state.');
-      return false;
+    if (elementId === 'start') {
+      this.running = true;
+      this.stateTimers[this.current].start();
+      console.log(`${this.current} timer started!`);
     }
-
-    this._logState();
-    this.state = newState;
-    this.stateTimer = new Timer();
-    console.log('done.');
-    return true;
-  }
-
-  timeInState() {
-    return this.stateTimer.elapsed();
-  }
-
-  _logState() {
-    if(this.started)
-      log(this.state, this.stateTimer);
+    else if (elementId === 'stop') {
+      this.running = false;
+      this.stateTimers[this.current].stop();
+      console.log(`${this.current} timer stopped!`);
+    }
   }
 }
 
-module.exports = { states, OrientationTracker };
+module.exports = { states, Tracker };

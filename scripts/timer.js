@@ -1,34 +1,27 @@
 
 class Timer {
-  constructor(start, stop) {
-    this.start = start || Date.now();
-    this.stop = stop || null;
+  constructor() {
+    this.secs = 0;
+    this.tickerId = null;
+    this.callback = console.log;
   }
 
-  running() {
-    return this.stop === null;
+  bind(callback) {
+    this.callback = callback;
+  }
+
+  start() {
+    this.callback(this.secs);
+    this.tickerId = setInterval(() => this.callback(++this.secs), 1000);
   }
 
   stop() {
-    if (!this.stop) {
-      this.stop = Date.now();
-      return true;
-    }
-
-    return false;
+    clearInterval(this.tickerId);
+    return this.secs;
   }
 
-  elapsed() {
-    if (this.stop) return this.stop - this.start;
-
-    return Date.now() - this.start;
-  }
-
-  elapsedFormatted() {
-    let formatted = {};
-    let time = elapsed();
-
-    formatted.secs = Math.floor(time / 1000);
+  elapsedSeconds() {
+    return this.secs;
   }
 }
 

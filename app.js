@@ -3,10 +3,12 @@ const path = require('path');
 const { app, BrowserWindow, ipcMain } = require('electron');
 
 const Timer = require('./scripts/timer');
-const { states, OrientationTracker } = require('./scripts/tracker');
+
+const { Tracker } = require('./scripts/tracker');
+const secondsFormatted = require('./scripts/helpers/time_formatter');
 
 let mainWindow;
-const ot = new OrientationTracker();
+let tracker;
 
 function createWindow() {
 
@@ -38,38 +40,19 @@ function createWindow() {
 app.on('ready', () => {
   createWindow();
 
-  const tick = () => {
-    console.log(ot.timeInState());
-    setTimeout(tick, 1000);
-  }
+  tracker = new Tracker();
 
-  ipcMain.on('orientation', (e, id) => {
-    if (id === 'sit') {
-      process.stdout.write('Setting orientation to sitting...');
-      ot.setState(states.SITTING);
-    }
+  ipcMain.on('init-btn', (e, req) => {
 
-    else if (id === 'stand') {
-      process.stdout.write('Setting orientation to standing...');
-      ot.setState(states.STANDING);
-    }
-
-    else if (id === 'pause') {
-      process.stdout.write('Setting orientation to paused...');
-      ot.setState(states.PAUSED);
-    }
   });
 
-  ipcMain.on('time-control', (e, id) => {
-    if (id === 'start') {
-      process.stdout.write('Starting...');
-      ot.start();
-    }
-
-    else if (id === 'stop') {
-      process.stdout.write('Stopping...');
-      ot.stop();
-    }
+  ipcMain.on('orientation', (e, req) => {
+    tracker.handleState(req.elementId);
+    console.log(`${req.elementId} button click registered`);
+  });
+  ipcMain.on('time-control', (e, req) => {
+    tracker.handleTimer(req.elementId);
+    console.log(`${req.elementId} button click registered`);
   });
 });
 
