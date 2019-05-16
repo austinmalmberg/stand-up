@@ -10,7 +10,7 @@ class Controller {
       stand: new Timer(),
       pause: new Timer()
     }
-    this.current = current || states[2];
+    this.current = current || states[0];
     this.running = false;
   }
 
@@ -51,7 +51,16 @@ class Controller {
       this.running = false;
       this.stateTimers[this.current].stop();
 
+
     }
+  }
+
+  getState() {
+    return this.current;
+  }
+
+  getStatus() {
+    return (this.running) ? 'start' : 'stop';
   }
 }
 
