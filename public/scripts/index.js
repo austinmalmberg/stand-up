@@ -14,6 +14,8 @@ function addListeners(classname) {
 
     disableButton(buttonGroup, this);
 
+    removeRunning();
+
     // send click notification to app.js
     ipcRenderer.send(`clicked:${classname}`, this.id);
   }
@@ -33,6 +35,11 @@ function disableButton(group, btn) {
 const sitTimer = document.getElementById('sit-timer');
 const standTimer = document.getElementById('stand-timer');
 
+function removeRunning() {
+  sitTimer.classList.remove('running');
+  standTimer.classList.remove('running');
+}
+
 
 // send ping to app.js that the window is ready
 window.onload = () => {
@@ -45,9 +52,14 @@ ipcRenderer.on('ready:init', (e, req) => {
   document.getElementById(req.status).setAttribute('disabled', 'true');
 });
 
+ipcRenderer.on('timer:sit', (e, timer) => {
+  sitTimer.classList.add('running');
+  sitTimer.innerText = timer;
+});
+ipcRenderer.on('timer:stand', (e, timer) => {
+  standTimer.classList.add('running');
+  standTimer.innerText = timer;
+});
 
-ipcRenderer.on('timer:sit', (e, timer) => sitTimer.innerText = timer);
-ipcRenderer.on('timer:stand', (e, timer) => standTimer.innerText = timer);
-
-addListeners('orientation');
+addListeners('state');
 addListeners('time-control');

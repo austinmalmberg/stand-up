@@ -11,13 +11,13 @@ let controller;
 function createWindow() {
 
   mainWindow = new BrowserWindow({
-    width: 640,
-    height: 360,
+    width: 853,
+    height: 480,
     resizable: false,
     webPreferences: {
       nodeIntegration: true,
       defaultFontFamily: {
-        sansSerif: 'Segoe UI'
+        sansSerif: 'Malgun Gothic'
       }
     }
   });
@@ -50,7 +50,7 @@ app.on('ready', () => {
   });
 
   // listen for and handle clicks
-  ipcMain.on('clicked:orientation', (e, id) => controller.handleState(id));
+  ipcMain.on('clicked:state', (e, id) => controller.handleState(id));
   ipcMain.on('clicked:time-control', (e, id) => controller.handleTimer(id));
 });
 
