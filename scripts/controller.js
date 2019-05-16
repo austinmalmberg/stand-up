@@ -1,4 +1,5 @@
 const Timer = require('./timer');
+const { logTimerData } = require('./logger');
 
 const states = ['sit', 'stand', 'pause'];
 
@@ -50,7 +51,7 @@ class Controller {
 
       this.running = false;
       this.stateTimers[this.current].stop();
-
+      logTimerData(this.stateTimers);
 
     }
   }

@@ -1,12 +1,17 @@
+const fs = require('fs');
+const filepath = 'public/data/log.json';
 
-let threshold = 1000;
+function logTimerData(stateTimers) {
+  const d = new Date();
+  const data = {
+    year: d.getFullYear(),
+    month: d.getMonth(),
+    date: d.getDate()
+  }
+  Object.keys(stateTimers).forEach(timerName => data[timerName] = stateTimers[timerName].seconds());
 
-function log(state, timer) {
-  if (timer.elapsed() < threshold) return;
+  const json = JSON.stringify(data, null, 4);
+  fs.writeFile(filepath, json, { encoding: 'utf8', flag: 'w' }, () => console.log('write successful'));
 }
 
-function setThreshold(ms) {
-  threshold = ms;
-}
-
-module.exports = { log, setThreshold };
+module.exports = { logTimerData };
