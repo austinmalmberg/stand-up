@@ -20,7 +20,7 @@ class Timer {
     return this.secs;
   }
 
-  elapsedSeconds() {
+  seconds() {
     return this.secs;
   }
 }

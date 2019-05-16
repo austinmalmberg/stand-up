@@ -1,27 +1,9 @@
 
 const { ipcRenderer } = require('electron');
 
-function addOrientationListeners() {
+function addListeners(classname) {
 
-  const buttonGroup = document.getElementsByClassName('orientation');
-
-  // add click listeners
-  for (let btn of buttonGroup) {
-    btn.onclick = handleClick;
-  }
-
-  function handleClick() {
-
-    // TODO: Disable other buttons in group
-
-    // send info to app.js
-    ipcRenderer.send('orientation', { elementId: this.id });
-  }
-}
-
-function addTimeControlListeners() {
-
-  const buttonGroup = document.getElementsByClassName('time-control');
+  const buttonGroup = document.getElementsByClassName(classname);
 
   // add click listeners
   for (let btn of buttonGroup) {
@@ -30,37 +12,20 @@ function addTimeControlListeners() {
 
   function handleClick() {
 
-    // TODO: Disable other buttons in group
+    for(let b of buttonGroup) {
+      b.disabled = true;
+    }
 
-    // send info to app.js
-    ipcRenderer.send('time-control', { elementId: this.id });
+    // send click notification to app.js
+    ipcRenderer.send(`clicked:${classname}`, this.id);
   }
-}
-
-function disable(group, button) {
-
 }
 
 const sitTimer = document.getElementById('sit-timer');
-
-// bind callbacks
-ipcRenderer.send('init-btn', {
-  elementId: 'sit',
-  callback: (timeFormatted) => {
-    sitTimer.innerHTML = timeFormatted;
-  },
-  timerElement: sitTimer
-});
-
 const standTimer = document.getElementById('stand-timer');
 
-ipcRenderer.send('init-btn', {
-  elementId: 'stand',
-  callback: (timeFormatted) => {
-    standTimer.innerHTML = timeFormatted;
-  },
-  timerElement: standTimer
-});
+ipcRenderer.on('timer:sit', (e, timer) => sitTimer.innerText = timer);
+ipcRenderer.on('timer:stand', (e, timer) => standTimer.innerText = timer);
 
-addOrientationListeners();
-addTimeControlListeners();
+addListeners('orientation');
+addListeners('time-control');

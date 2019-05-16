@@ -2,13 +2,11 @@ const url = require('url');
 const path = require('path');
 const { app, BrowserWindow, ipcMain } = require('electron');
 
-const Timer = require('./scripts/timer');
-
-const { Tracker } = require('./scripts/tracker');
-const secondsFormatted = require('./scripts/helpers/time_formatter');
+const { states, Controller } = require('./scripts/controller');
+const { secondsAsString } = require('./scripts/helpers/formatter');
 
 let mainWindow;
-let tracker;
+let controller;
 
 function createWindow() {
 
@@ -40,20 +38,11 @@ function createWindow() {
 app.on('ready', () => {
   createWindow();
 
-  tracker = new Tracker();
+  controller = new Controller();
+  states.forEach(state => controller.bindCallback(state, (elapsed) => mainWindow.webContents.send(`timer:${state}`, secondsAsString(elapsed))));
 
-  ipcMain.on('init-btn', (e, req) => {
-
-  });
-
-  ipcMain.on('orientation', (e, req) => {
-    tracker.handleState(req.elementId);
-    console.log(`${req.elementId} button click registered`);
-  });
-  ipcMain.on('time-control', (e, req) => {
-    tracker.handleTimer(req.elementId);
-    console.log(`${req.elementId} button click registered`);
-  });
+  ipcMain.on('clicked:orientation', (e, id) => controller.handleState(id));
+  ipcMain.on('clicked:time-control', (e, id) => controller.handleTimer(id));
 });
 
 // Quit when all windows are closed
