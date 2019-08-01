@@ -1,21 +1,19 @@
 const Timer = require('./timer');
 
-const states = ['sit', 'stand', 'pause'];
-
 class Controller {
 
-  constructor(current) {
+  constructor(current=null) {
     this.stateTimers = {
       sit: new Timer(),
       stand: new Timer(),
       pause: new Timer()
     }
-    this.current = current || states[0];
+    this.current = current || this.getAllStates()[0];
     this.running = false;
   }
 
   bindCallback(timerId, callback) {
-    if (!states.includes(timerId)) return;
+    if (!this.getAllStates().includes(timerId)) return;
 
     this.stateTimers[timerId].bind(callback);
   }
@@ -23,7 +21,7 @@ class Controller {
   handleState(timerId) {
 
     if (timerId == this.current) return;
-    else if (!states.includes(timerId)) return;
+    else if (!this.getAllStates().includes(timerId)) return;
 
     // stop the current timer
     this.stateTimers[this.current].stop();
@@ -55,6 +53,10 @@ class Controller {
     }
   }
 
+  stopAllTimers() {
+    [...Object.keys(this.stateTimers)].forEach(state => this.stateTimers[state].stop());
+  }
+
   getState() {
     return this.current;
   }
@@ -62,6 +64,10 @@ class Controller {
   getStatus() {
     return (this.running) ? 'start' : 'stop';
   }
+
+  getAllStates() {
+    return [...Object.keys(this.stateTimers)];
+  }
 }
 
-module.exports = { states, Controller };
+module.exports = Controller;

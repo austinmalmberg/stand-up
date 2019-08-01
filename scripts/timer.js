@@ -17,6 +17,9 @@ class Timer {
 
   stop() {
     clearInterval(this.tickerId);
+
+    console.log(`${this.tickerId} stopped.`);
+
     return this.secs;
   }
 

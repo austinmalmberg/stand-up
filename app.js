@@ -2,7 +2,7 @@ const url = require('url');
 const path = require('path');
 const { app, BrowserWindow, ipcMain } = require('electron');
 
-const { states, Controller } = require('./scripts/controller');
+const Controller = require('./scripts/controller');
 const { secondsAsString } = require('./scripts/helpers/formatter');
 
 let mainWindow;
@@ -30,16 +30,19 @@ function createWindow() {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
+
+    controller.stopAllTimers();
     mainWindow = null;
   });
 }
 
 // Called when Electron finishes initialization
 app.on('ready', () => {
-  createWindow();
 
   controller = new Controller();
-  states.forEach(state => controller.bindCallback(state, (elapsed) => mainWindow.webContents.send(`timer:${state}`, secondsAsString(elapsed))));
+  createWindow();
+
+  controller.getAllStates().forEach(state => controller.bindCallback(state, (elapsed) => mainWindow.webContents.send(`timer:${state}`, secondsAsString(elapsed))));
 
   // pass controller data to index.html to set initial button states
   ipcMain.on('index:ready', (e, req) => {
