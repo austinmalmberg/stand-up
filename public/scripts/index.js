@@ -14,7 +14,7 @@ function addListeners(classname) {
 
     disableButton(buttonGroup, this);
 
-    removeRunning();
+    removeRunTimerStyling();
 
     // send click notification to app.js
     ipcRenderer.send(`clicked:${classname}`, this.id);
@@ -35,7 +35,7 @@ function disableButton(group, btn) {
 const sitTimer = document.getElementById('sit-timer');
 const standTimer = document.getElementById('stand-timer');
 
-function removeRunning() {
+function removeRunTimerStyling() {
   sitTimer.classList.remove('running');
   standTimer.classList.remove('running');
 }
