@@ -41,7 +41,7 @@ app.on('ready', () => {
   controller = new Controller();
   states.forEach(state => controller.bindCallback(state, (elapsed) => mainWindow.webContents.send(`timer:${state}`, secondsAsString(elapsed))));
 
-  // pass controller data to index.html so it can set initial button states
+  // pass controller data to index.html to set initial button states
   ipcMain.on('index:ready', (e, req) => {
     e.sender.send('ready:init', {
       state: controller.getState(),
