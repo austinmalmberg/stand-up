@@ -3,70 +3,94 @@ const Timer = require('./timer');
 class Controller {
 
   constructor(current=null) {
-    this.stateTimers = {
-      sit: new Timer(),
-      stand: new Timer(),
-      pause: new Timer()
+    /**
+     * An object that stores a new Timer object for each orientation (sitting,
+     * standing, paused)
+     */
+    this.orientationTimers = {
+      sitting: new Timer(),
+      standing: new Timer(),
+      paused: new Timer()
     }
-    this.current = current || this.getAllStates()[0];
+
+    /**
+     * Stores a string value that matches an orientation timer key which
+     * represent the current orientation
+     */
+    this.current = current || this.getOrientations()[0];
+
+    /**
+     * A variable to determine whether a orientation timer is currently running
+     */
     this.running = false;
   }
 
-  bindCallback(timerId, callback) {
-    if (!this.getAllStates().includes(timerId)) return;
+  /**
+   * Binds the callback for a given orientation timer
+   */
+  bindCallback(orientation, callback) {
+    if (!this.getOrientations().includes(orientation))
+      return false;
 
-    this.stateTimers[timerId].bind(callback);
+    this.orientationTimers[orientation].bind(callback);
+    return true;
   }
 
-  handleState(timerId) {
+  handleOrientation(orientation) {
 
-    if (timerId == this.current) return;
-    else if (!this.getAllStates().includes(timerId)) return;
+    if (orientation == this.current)
+      return false;
+    else if (!this.getOrientations().includes(orientation))
+      return false;
 
     // stop the current timer
-    this.stateTimers[this.current].stop();
+    this.orientationTimers[this.current].stop();
 
     // replace the current timer
-    this.current = timerId;
+    this.current = orientation;
 
-    if (this.running) {
-      this.stateTimers[this.current].start();
-    }
+    // start the new timer if running
+    if (this.running)
+      this.orientationTimers[this.current].start();
+
+    return true;
   }
 
-  handleTimer(timerId) {
+  handleTimerState(timerState) {
 
-    if (timerId === 'start' && this.running) return;
-    else if (timerId === 'stop' && !this.running) return;
+    if (timerState === 'started' && this.running)
+      return false;
+    else if (timerState === 'stopped' && !this.running)
+      return false;
 
-    if (timerId === 'start') {
+    if (timerState === 'started') {
 
       this.running = true;
-      this.stateTimers[this.current].start();
+      this.orientationTimers[this.current].start();
 
-    } else if (timerId === 'stop') {
+    } else if (timerState === 'stopped') {
 
       this.running = false;
-      this.stateTimers[this.current].stop();
-
-
+      this.orientationTimers[this.current].stop();
     }
+
+    return true;
   }
 
   stopAllTimers() {
-    [...Object.keys(this.stateTimers)].forEach(state => this.stateTimers[state].stop());
+    [...Object.keys(this.orientationTimers)].forEach(orientation => this.orientationTimers[orientation].stop());
   }
 
-  getState() {
+  getCurrentOrientation() {
     return this.current;
   }
 
-  getStatus() {
-    return (this.running) ? 'start' : 'stop';
+  getTimerState() {
+    return (this.running) ? 'started' : 'stopped';
   }
 
-  getAllStates() {
-    return [...Object.keys(this.stateTimers)];
+  getOrientations() {
+    return [...Object.keys(this.orientationTimers)];
   }
 }
 

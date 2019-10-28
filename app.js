@@ -42,19 +42,27 @@ app.on('ready', () => {
   controller = new Controller();
   createWindow();
 
-  controller.getAllStates().forEach(state => controller.bindCallback(state, (elapsed) => mainWindow.webContents.send(`timer:${state}`, secondsAsString(elapsed))));
+  /**
+   * Binds a callback to each state timer. This callback sends the elapsed
+   * number of seconds to the renderer, index.js
+   */
+  controller.getOrientations().forEach(orientation => {
+    controller.bindCallback(orientation, (elapsed) => {
+      mainWindow.webContents.send(`timer: ${orientation}`, secondsAsString(elapsed));
+    });
+  });
 
   // pass controller data to index.html to set initial button states
-  ipcMain.on('index:ready', (e, req) => {
-    e.sender.send('ready:init', {
-      state: controller.getState(),
-      status: controller.getStatus()
+  ipcMain.on('index: ready', (e, req) => {
+    e.sender.send('init-timer-states', {
+      orientation: controller.getCurrentOrientation(),
+      timerState: controller.getTimerState()
     });
   });
 
   // listen for and handle clicks
-  ipcMain.on('clicked:state', (e, id) => controller.handleState(id));
-  ipcMain.on('clicked:time-control', (e, id) => controller.handleTimer(id));
+  ipcMain.on('clicked: orientation', (e, elementId) => controller.handleOrientation(elementId));
+  ipcMain.on('clicked: timer-state', (e, elementId) => controller.handleTimerState(elementId));
 });
 
 // Quit when all windows are closed

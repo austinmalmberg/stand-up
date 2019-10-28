@@ -1,6 +1,14 @@
 
 const { ipcRenderer } = require('electron');
 
+/**
+ * Add onclick listeners to all elements of the given class.
+ *
+ * This onclick listener disables the button, removes the running class from
+ * the orientation timers, and sends a message to app.js that the button was
+ * clicked.  NOTE: Message sent is determined by the given classname and the
+ * id of the element clicked
+ */
 function addListeners(classname) {
 
   const buttonGroup = document.getElementsByClassName(classname);
@@ -13,14 +21,19 @@ function addListeners(classname) {
   function handleClick() {
 
     disableButton(buttonGroup, this);
-
     removeRunTimerStyling();
 
     // send click notification to app.js
-    ipcRenderer.send(`clicked:${classname}`, this.id);
+    ipcRenderer.send(`clicked: ${classname}`, this.id);
   }
 }
 
+/**
+ * Disables the provided button, btn, within the given button group.  Also
+ * removes disabled attributes from all other buttons.  NOTE: If btn is not in
+ * group, this will not disable btn and will remove all disabled attributes from
+ * every element in the group
+ */
 function disableButton(group, btn) {
 
   for(let b of group) {
@@ -32,34 +45,39 @@ function disableButton(group, btn) {
   }
 }
 
-const sitTimer = document.getElementById('sit-timer');
-const standTimer = document.getElementById('stand-timer');
+const sitTimer = document.getElementById('sitting-timer');
+const standTimer = document.getElementById('standing-timer');
 
+/**
+ * Remove the styling class associated with the currently running timer
+*/
 function removeRunTimerStyling() {
   sitTimer.classList.remove('running');
   standTimer.classList.remove('running');
 }
 
 
-// send ping to app.js that the window is ready
+// emit ping when the window is ready
 window.onload = () => {
-  ipcRenderer.send('index:ready', null);
+  ipcRenderer.send('index: ready', null);
 }
 
-// get state and reply
-ipcRenderer.on('ready:init', (e, req) => {
-  document.getElementById(req.state).setAttribute('disabled', 'true');
-  document.getElementById(req.status).setAttribute('disabled', 'true');
+// Listeners for emitted messages
+
+ipcRenderer.on('init-timer-states', (e, req) => {
+  document.getElementById(req.orientation).setAttribute('disabled', 'true');
+  document.getElementById(req.timerState).setAttribute('disabled', 'true');
 });
 
-ipcRenderer.on('timer:sit', (e, timer) => {
+ipcRenderer.on('timer: sitting', (e, elapsed) => {
   sitTimer.classList.add('running');
-  sitTimer.innerText = timer;
+  sitTimer.innerText = elapsed;
 });
-ipcRenderer.on('timer:stand', (e, timer) => {
+ipcRenderer.on('timer: standing', (e, elapsed) => {
   standTimer.classList.add('running');
-  standTimer.innerText = timer;
+  standTimer.innerText = elapsed;
 });
 
-addListeners('state');
-addListeners('time-control');
+
+addListeners('orientation');
+addListeners('timer-state');
