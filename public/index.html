@@ -6,34 +6,19 @@
     <title>Stand Up</title>
   </head>
   <body>
-    <div class="wrapper c-flex flex-col flex-around">
+    <main class="c-flex flex-row light-off">
 
-      <div class="timers c-flex flex-around">
-
-        <div class="timer-container sitting">
-          <h2>Sitting</h2>
-          <p id="sitting-timer" class="timer">0:00:00</p>
-        </div>
-
-        <div class="timer-container standing">
-          <h2>Standing</h2>
-          <p id="standing-timer" class="timer">0:00:00</p>
-        </div>
+      <div id="current-orientation" class="wrapper orientation sitting">
 
       </div>
 
-      <div class="button-container orientations c-flex">
-          <button id="sitting" class="button orientation">Sit</button>
-          <button id="standing" class="button orientation">Stand</button>
+      <div id="timer-control" class="wrapper timer switch-off">
+
       </div>
 
-      <div class="button-container time-states c-flex">
-        <button id="started" class="button timer-state">Start</button>
-        <button id="paused" class="button orientation">Pause</button>
-        <button id="stopped" class="button timer-state">Stop</button>
-      </div>
-    </div>
+    </main>
 
-    <script src="scripts/index.js"></script>
+    <script src="scripts/view.js"></script>
+    <script src="scripts/controller.js"></script>
   </body>
 </html>

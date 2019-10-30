@@ -17,10 +17,14 @@
 
   --font-family: 'Malgun Gothic';
   --border-radius: 4px;
+
+  --background-color-on: #fff1a4;
+  --background-color-off: #a4b0be;
 }
 
 *, *::before, *::after {
   box-sizing: border-box;
+  height: 100%;
 }
 
 html {
@@ -28,9 +32,13 @@ html {
 }
 
 body {
-  background-color: var(--background-color);
   text-align: center;
   overflow: hidden;
+  margin: 0;
+}
+
+main {
+
 }
 
 h2 {
@@ -107,10 +115,10 @@ h2 {
 }
 
 .wrapper {
-  margin: 1.4em 1.2em;
-  padding: 1.4em;
+  width: 90vw;
+  height: 90vh;
+  margin: 2em;
   border: 1px solid var(--accent-color);
-  height: 88vh;
   border-radius: var(--border-radius);
 }
 
@@ -130,4 +138,40 @@ h2 {
 
 .running {
   font-size: 1.6em;
+}
+
+/* sprites */
+
+.light-on {
+  background-color: var(--background-color-on);
+}
+
+.light-off {
+  background-color: var(--background-color-off);
+}
+
+.timer {
+  background-image: url("../images/light-switch-off.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.switch-off {
+  /* transform: rotateX(0deg); */
+}
+
+.switch-on {
+  transform: rotateX(180deg);
+}
+
+.standing {
+	background: url('../images/standing.png');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.sitting {
+	background: url('../images/sitting.png');
+  background-repeat: no-repeat;
+  background-position: center;
 }
