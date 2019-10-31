@@ -24,7 +24,6 @@
 
 *, *::before, *::after {
   box-sizing: border-box;
-  height: 100%;
 }
 
 html {
@@ -35,57 +34,13 @@ body {
   text-align: center;
   overflow: hidden;
   margin: 0;
-}
-
-main {
-
-}
-
-h2 {
-  margin: 0;
-  font-weight: normal;
-}
-
-.button {
-  font-family: var(--font-family), Arial;
-  font-size: 1.4em;
-  border-radius: var(--border-radius);
-  border: 2px solid var(--button-border);
-  background-color: var(--button-background);
-  color: var(--button-text);
-  transition-duration: 400ms;
-}
-
-.button:not([disabled]) {
-  box-shadow: 0px 10px 14px -7px var(--accent-color);
-}
-
-.button:not([disabled]):hover {
-  border-color: var(--button-border-hover);
-  background-color: var(--button-background-hover);
-  color: var(--button-text-hover);
-}
-
-.button[disabled] {
-  background-color: var(--button-background-disabled);
-  color: var(--button-text-disabled);
-  border-color: var(--button-border-disabled);
-  opacity: 0.3;
-}
-
-/* GRID CONTROLS */
-
-.c-grid {
-  display: flex;
+  background: #ffffcc;
 }
 
 /* FLEX CONTROLS */
 
-.c-flex {
-  display: flex;
-}
-
 .flex-col {
+  display: flex;
   flex-direction: column;
 }
 
@@ -102,76 +57,31 @@ h2 {
   justify-content: center;
 }
 
-/* CLASS CONTROLS */
+/* MYTOGGLE */
 
-.button-container {
-  width: 100%;
-  height: 20vh
+.toggle--indicator {
+
 }
 
-.button-container * {
-  margin: 0 0.4em;
-  width: 100%;
+.toggle--container {
+  min-width: 330px;
+  max-width: 500px;
+  width: 50%;
+  font-size: 2em;
+  display: flex;
+  justify-content: center;
+  background: #d3d3d3;
+  border: 1px solid red;
 }
 
-.wrapper {
-  width: 90vw;
-  height: 90vh;
-  margin: 2em;
-  border: 1px solid var(--accent-color);
-  border-radius: var(--border-radius);
+.toggle--span {
+  display: block;
+  width: 50%;
+  opacity: 0.5;
+  /* border: 1px solid black; */
 }
 
-.timers * {
-  margin: 0;
-  padding: 0;
-}
-
-.timer-container {
-  width: 47%;
-  min-height: 100px;
-  font-size: 1.4em;
-  padding: 0.4em 0;
-  border: 2px solid var(--accent-color);
-  border-radius: var(--border-radius);
-}
-
-.running {
-  font-size: 1.6em;
-}
-
-/* sprites */
-
-.light-on {
-  background-color: var(--background-color-on);
-}
-
-.light-off {
-  background-color: var(--background-color-off);
-}
-
-.timer {
-  background-image: url("../images/light-switch-off.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-.switch-off {
-  /* transform: rotateX(0deg); */
-}
-
-.switch-on {
-  transform: rotateX(180deg);
-}
-
-.standing {
-	background: url('../images/standing.png');
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-.sitting {
-	background: url('../images/sitting.png');
-  background-repeat: no-repeat;
-  background-position: center;
+.toggle--span.active {
+  background-color: rgb(102, 163, 255);
+  opacity: 1;
 }

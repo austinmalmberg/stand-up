@@ -7,4 +7,6 @@ function secondsAsString(secs) {
   return `${hours}:${minutes}:${seconds}`;
 }
 
-module.exports = { secondsAsString };
+function msAsString(ms) {
+  return secondsAsString(Math.floor(ms / 1000));
+}
