@@ -6,29 +6,28 @@
     <title>Stand Up</title>
   </head>
   <body>
-    <main class="">
+    <main class="wrapper">
 
-      <div class="mytoggle">
-
-        <div>
+        <div class="toggle--container">
 
           <h3 id="orientation-indicator" class="toggle--indicator">SITTING</h3>
-          <div id="orientation" class="toggle--container">
-            <span id="sitting" class="toggle--span stopwatch active">0:00:00</span>
-            <span id="standing" class="toggle--span stopwatch">0:00:00</span>
+
+          <div id="orientation" class="toggle">
+            <span id="sitting" class="toggle--option ticker active">0:00:00</span>
+            <span id="standing" class="toggle--option ticker">0:00:00</span>
           </div>
 
         </div>
 
-        <div>
+
+        <div class="toggle--container">
 
           <h3 id="timer-indicator" class="toggle--indicator">OFF</h3>
-          <div id="timer" class="toggle--container">
-            <span id="off" class="toggle--span active"></span>
-            <span id="on" class="toggle--span stopwatch">0:00:00</span>
-          </div>
 
-        </div>
+          <div id="timer" class="toggle">
+            <span id="off" class="toggle--option active"></span>
+            <span id="on" class="toggle--option ticker">0:00:00</span>
+          </div>
 
       </div>
 

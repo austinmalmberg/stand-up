@@ -8,5 +8,5 @@ function secondsAsString(secs) {
 }
 
 function msAsString(ms) {
-  return secondsAsString(Math.floor(ms / 1000));
+  return secondsAsString(Math.round(ms / 1000));
 }

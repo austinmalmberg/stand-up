@@ -14,19 +14,24 @@ class Controller {
 
   /**
    * Adds a toggle object to Controller.toggles where key=toggle.id and value=
-   * an object that stores prev and curr keys where there values are element ids
+   * the id of the (first) active element
    */
   registerToggle(toggle) {
     this.toggles[toggle.id] = toggle.getElementsByClassName(CLASS_TO_TOGGLE)[0].id;
   }
 
-  toggleChanged(toggle, active) {
+  toggleChanged(toggle, option) {
+
+    // update toggle--indicator text
+    const toggleContainer = toggle.parentElement;
+    const toggleIndicator = toggleContainer.getElementsByClassName('toggle--indicator')[0];
+    toggleIndicator.innerText = option.id.toUpperCase();
 
     if (this.timerOn())
       this.session.postActivity();
 
     // update the toggle
-    this.toggles[toggle.id] = active.id;
+    this.toggles[toggle.id] = option.id;
 
     // start a new activity if the timer is still on
     if (this.timerOn())
@@ -65,8 +70,8 @@ class Controller {
 
 const controller = new Controller();
 
-// add click listeners and register the toggle in the controller
-[...document.getElementsByClassName('toggle--container')].forEach( toggle => {
+// add click listeners and register each toggle in the controller
+[...document.getElementsByClassName('toggle')].forEach( toggle => {
   addOnClickListener(toggle);
   controller.registerToggle(toggle);
 });
@@ -82,16 +87,16 @@ function addOnClickListener(toggle) {
     [...toggle.children].forEach(toggleClass);
   };
 
-  function toggleClass(child) {
+  function toggleClass(option) {
 
-    const containsToggleClass = child.classList.contains(CLASS_TO_TOGGLE);
+    const containsToggleClass = option.classList.contains(CLASS_TO_TOGGLE);
 
     if (containsToggleClass)
-      child.classList.remove(CLASS_TO_TOGGLE);
+      option.classList.remove(CLASS_TO_TOGGLE);
 
     else {
-      child.classList.add(CLASS_TO_TOGGLE);
-      controller.toggleChanged(toggle, child);
+      option.classList.add(CLASS_TO_TOGGLE);
+      controller.toggleChanged(toggle, option);
     }
   }
 }

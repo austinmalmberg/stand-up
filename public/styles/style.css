@@ -34,54 +34,45 @@ body {
   text-align: center;
   overflow: hidden;
   margin: 0;
-  background: #ffffcc;
 }
 
-/* FLEX CONTROLS */
-
-.flex-col {
+main {
+  height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
-}
-
-.flex-around {
   justify-content: space-around;
+  align-items: center;
 }
 
-.flex-between {
-  justify-content: space-between;
-}
-
-.flex-align-center {
-  align-content: center;
-  justify-content: center;
-}
-
-/* MYTOGGLE */
-
-.toggle--indicator {
-
-}
+/* MY TOGGLE */
 
 .toggle--container {
+  font-size: 1.6rem;
+}
+
+.toggle--indicator {
+  margin: 0;
+}
+
+.toggle {
   min-width: 330px;
   max-width: 500px;
+  margin: 0 auto;
   width: 50%;
-  font-size: 2em;
   display: flex;
   justify-content: center;
   background: #d3d3d3;
-  border: 1px solid red;
 }
 
-.toggle--span {
+.toggle--option {
   display: block;
   width: 50%;
   opacity: 0.5;
   /* border: 1px solid black; */
 }
 
-.toggle--span.active {
+.toggle--option.active {
   background-color: rgb(102, 163, 255);
   opacity: 1;
 }
