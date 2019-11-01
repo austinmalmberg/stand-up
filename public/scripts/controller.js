@@ -71,8 +71,10 @@ class Controller {
 const controller = new Controller();
 
 // add click listeners and register each toggle in the controller
-[...document.getElementsByClassName('toggle')].forEach( toggle => {
-  addOnClickListener(toggle);
+[...document.getElementsByClassName('toggle--container')].forEach( toggleContainer => {
+  const toggle = toggleContainer.getElementsByClassName('toggle')[0];
+
+  addOnClickListener(toggleContainer, toggle);
   controller.registerToggle(toggle);
 });
 
@@ -81,8 +83,11 @@ setInterval(() => controller.updateTimers(), 1000);
 
 /******* VIEW FUNCTIONS *******/
 
-function addOnClickListener(toggle) {
-  toggle.onclick = () => {
+/**
+ * Adds a click listener to the toggle container
+ */
+function addOnClickListener(toggleContainer, toggle) {
+  toggleContainer.onclick = () => {
     // adds or removes the class based on whether the child currently has it
     [...toggle.children].forEach(toggleClass);
   };

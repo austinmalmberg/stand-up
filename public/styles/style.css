@@ -1,25 +1,20 @@
 :root {
-  --background-color: #a4b0be;
-  --accent-color: #747d8c;
-  --button-accent-color: black;
+  --background-color: #f5f6fa;
 
-  --button-background: #5352ed;
-  --button-background-hover: #70a1ff;
-  --button-background-disabled: transparent;
+  --transition-duration: 400ms;
 
-  --button-text: #dfe4ea;
-  --button-text-hover: black;
-  --button-text-disabled: black;
+  --toggle-container-background: #f5f6fa;
+  --toggle-indicator-color: black;
 
-  --button-border: var(--button-background) /* #2f3542 */;
-  --button-border-hover: var(--button-background-hover);
-  --button-border-disabled: var(--button-text-disabled);
+  --orientation-toggle-background: #ff7675;
+  --orientation-toggle-background-active: #d63031;
+
+  --timer-toggle-background: #74b9ff;
+  --timer-toggle-background-active: #0984e3;
 
   --font-family: 'Malgun Gothic';
-  --border-radius: 4px;
-
-  --background-color-on: #fff1a4;
-  --background-color-off: #a4b0be;
+  --border-radius: 5px;
+  --border-width: 1px;
 }
 
 *, *::before, *::after {
@@ -34,6 +29,7 @@ body {
   text-align: center;
   overflow: hidden;
   margin: 0;
+  background: var(--background-color);
 }
 
 main {
@@ -45,14 +41,29 @@ main {
   align-items: center;
 }
 
-/* MY TOGGLE */
+/* TOGGLES */
 
 .toggle--container {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--toggle-container-background);
+  border-radius: var(--border-radius);
+  border: var(--border-width) solid var(--toggle-indicator-color);
+}
+
+.toggle--container:hover .toggle--indicator {
+  color: var(--toggle-container-background);
+  background: var(--toggle-indicator-color);
 }
 
 .toggle--indicator {
+  color: var(--toggle-indicator-color);
   margin: 0;
+  border-top: var(--border-width) solid var(--toggle-indicator-color);
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  transition-duration: var(--transition-duration);
 }
 
 .toggle {
@@ -62,17 +73,44 @@ main {
   width: 50%;
   display: flex;
   justify-content: center;
-  background: #d3d3d3;
+  align-items: center;
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
 }
 
 .toggle--option {
-  display: block;
+  display: inline-block;
   width: 50%;
-  opacity: 0.5;
-  /* border: 1px solid black; */
+  opacity: 0.2;
+  transition-duration: var(--transition-duration);
+}
+
+.toggle--option.left.active {
+  border-top-left-radius: var(--border-radius);
+}
+
+.toggle--option.right.active {
+ border-top-right-radius: var(--border-radius);
 }
 
 .toggle--option.active {
-  background-color: rgb(102, 163, 255);
+  background-color: var(--timer-toggle-background);
   opacity: 1;
+}
+
+/* INDIVIDUAL TOGGLES */
+
+.toggle--orientation {
+  background-color: var(--orientation-toggle-background);
+}
+.toggle--orientation .active {
+  background-color: var(--orientation-toggle-background-active);
+}
+
+.toggle--timer {
+  background-color: var(--timer-toggle-background);
+}
+
+.toggle--timer .active {
+  background-color: var(--timer-toggle-background-active);
 }

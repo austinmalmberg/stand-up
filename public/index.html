@@ -8,28 +8,31 @@
   <body>
     <main class="wrapper">
 
-        <div class="toggle--container">
+      <div class="toggle--container">
 
-          <h3 id="orientation-indicator" class="toggle--indicator">SITTING</h3>
-
-          <div id="orientation" class="toggle">
-            <span id="sitting" class="toggle--option ticker active">0:00:00</span>
-            <span id="standing" class="toggle--option ticker">0:00:00</span>
-          </div>
-
+        <div id="orientation" class="toggle toggle--orientation">
+          <span id="sitting" class="toggle--option ticker left active">0:00:00</span>
+          <span id="standing" class="toggle--option ticker right">0:00:00</span>
         </div>
 
-
-        <div class="toggle--container">
-
-          <h3 id="timer-indicator" class="toggle--indicator">OFF</h3>
-
-          <div id="timer" class="toggle">
-            <span id="off" class="toggle--option active"></span>
-            <span id="on" class="toggle--option ticker">0:00:00</span>
-          </div>
+        <p id="orientation-indicator" class="toggle--indicator">SITTING</p>
 
       </div>
+
+
+      <div class="toggle--container">
+
+        <div id="timer" class="toggle toggle--timer">
+          <span id="off" class="toggle--option left active">OFF</span>
+          <span id="on" class="toggle--option ticker right">0:00:00</span>
+        </div>
+
+        <p id="timer-indicator" class="toggle--indicator">OFF</p>
+
+      </div>
+
+      <!-- div that will contain backup button and settings -->
+      <div class=""></div>
 
     </main>
 
