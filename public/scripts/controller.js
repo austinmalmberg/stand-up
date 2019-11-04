@@ -7,7 +7,8 @@ class Controller {
 
     this.toggles = {/*
       toggle.id: <id of currently active element>
-    */};
+    */
+    };
 
     this.session = new Session();
   }
@@ -28,7 +29,7 @@ class Controller {
     toggleIndicator.innerText = option.id.toUpperCase();
 
     if (this.timerOn())
-      this.session.postActivity();
+      this.session.endActivity();
 
     // update the toggle
     this.toggles[toggle.id] = option.id;
@@ -49,20 +50,12 @@ class Controller {
   }
 
   updateTimers() {
-    const elapsed = this.session.elapsed();
 
     [...document.getElementById('orientation').children].forEach(element => {
-
-      const activeOrientation = this.currentOrientation() === element.id;
-      let time = this.session.get(element.id);
-
-      if (activeOrientation)
-        time += elapsed;
-
-      element.innerText = msAsString(time);
+        element.innerText = msToString(this.session.elapsed(element.id));
     });
 
-    document.getElementById('on').innerText = msAsString(this.session.total() + elapsed);
+    document.getElementById('on').innerText = msToString(this.session.elapsed());
   }
 }
 

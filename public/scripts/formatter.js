@@ -7,6 +7,6 @@ function secondsAsString(secs) {
   return `${hours}:${minutes}:${seconds}`;
 }
 
-function msAsString(ms) {
+function msToString(ms) {
   return secondsAsString(Math.round(ms / 1000));
 }

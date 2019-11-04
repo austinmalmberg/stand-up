@@ -1,76 +1,95 @@
 /**
- * The model is responsible for managing the sessionTimer object.
+ * The model is responsible for managing the timers object.
  */
 
 class Session {
 
   constructor(keys=[]) {
-    this.sessionTimer = {/*
+    this.timers = {/*
       sitting: [],
       standing: []
     */
     };
 
-    keys.forEach( key => {
-      this.sessionTimer[key] = [];
-    });
+    keys.forEach(key => this.timers[key] = []);
 
     this.activity = null;
   }
 
   beginActivity(name) {
-    this.activity = {
-      'name': name,
-      start: Date.now()
-    };
-
-    console.log(`${Date.now()} : Started at ${this.activity.start}.`);
+    this.activity = new Activity(name);
   }
 
-  postActivity() {
-    if (this.activity) {
+  endActivity() {
+    if (!this.activity)
+      return false;
 
-      if (!this.sessionTimer[this.activity.name])
-        this.sessionTimer[this.activity.name] = [];
+    this.activity.stop();
 
-      this.sessionTimer[this.activity.name].push(this.elapsed());
-
-      console.log(`${Date.now()} : Posted for ${this.elapsed()} ms.`);
-
-      this.activity = null;
-
-      return true;
+    if (this.timers.hasOwnProperty(this.activity.name))
+      this.timers[this.activity.name].push(this.activity.elapsed());
+    else {
+      this.timers[this.activity.name] = [this.activity.elapsed()];
     }
 
-    console.log(`${Date.now()} : Unable to post ${this.activity.name}`);
-    return false;
-  }
+    this.activity = null;
 
-  getActivity() {
-    return this.activity;
+    return true;
   }
 
   /**
-   * Returns the elapsed time (in ms) spent in the given activity during this
-   * session
+   * Recursive function that returns the elapsed time (in ms) spent in the given
+   * activity. If a name is omitted, returns the elapsed time spent in the
+   * current session.
    */
-  get(name) {
-    if (!this.sessionTimer[name])
-      return 0;
+  elapsed(activityName) {
 
-    return this.sessionTimer[name]
-        .reduce((total, curr) => total + curr, 0);
+    let total = 0;
+
+    if (activityName) {
+
+      if (this.timers.hasOwnProperty(activityName))
+        total += this.timers[activityName].reduce((t, ms) => t + ms, 0);
+
+      if (this.activity && this.activity.name === activityName) {
+        total += this.activity.elapsed();
+      }
+
+    } else {
+
+      for (let timer of Object.keys(this.timers)) {
+        total += this.timers[timer].reduce((t, ms) => t + ms, 0);
+      }
+
+      if (!this.timers.hasOwnProperty(activityName) && this.activity) {
+        total += this.activity.elapsed();
+      }
+    }
+
+    return total;
+  }
+}
+
+
+
+class Activity {
+  constructor(name, start, end) {
+    this.name = name;
+    this.start = start || Date.now();
+    this.end = end || null;
   }
 
-  total() {
-    return [...Object.keys(this.sessionTimer)]
-        .reduce((total, activity) => total + this.get(activity), 0);
+  stop() {
+    if (!this.end)
+      this.end = Date.now();
+
+    return this.elapsed();
   }
 
   elapsed() {
-    if (!this.activity)
-      return 0;
+    if (this.end)
+      return this.end - this.start;
 
-    return Date.now() - this.activity.start;
+    return Date.now() - this.start;
   }
 }
