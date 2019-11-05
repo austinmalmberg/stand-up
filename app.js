@@ -8,8 +8,8 @@ function createWindow() {
 
   mainWindow = new BrowserWindow({
     width: 480,
-    height: 360,
-    resizable: false,
+    height: 640,
+    resizable: true,
     webPreferences: {
       nodeIntegration: true,
       defaultFontFamily: {

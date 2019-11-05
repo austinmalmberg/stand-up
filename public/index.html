@@ -6,16 +6,21 @@
     <title>Stand Up</title>
   </head>
   <body>
-    <main class="wrapper">
+
+    <main>
+
+      <div class="title--container">
+        <h1 class="title compact">Stand Up</h1>
+      </div>
 
       <div class="toggle--container">
 
         <div id="orientation" class="toggle toggle--orientation">
-          <span id="sitting" class="toggle--option ticker left active">0:00:00</span>
-          <span id="standing" class="toggle--option ticker right">0:00:00</span>
+          <span id="sitting" class="toggle--option centered left active">0:00:00</span>
+          <span id="standing" class="toggle--option centered right">0:00:00</span>
         </div>
 
-        <p id="orientation-indicator" class="toggle--indicator">SITTING</p>
+        <p id="orientation-indicator" class="toggle--indicator centered">SITTING</p>
 
       </div>
 
@@ -23,16 +28,19 @@
       <div class="toggle--container">
 
         <div id="timer" class="toggle toggle--timer">
-          <span id="off" class="toggle--option left active">OFF</span>
-          <span id="on" class="toggle--option ticker right">0:00:00</span>
+          <span id="off" class="toggle--option centered left active">OFF</span>
+          <span id="on" class="toggle--option centered right">0:00:00</span>
         </div>
 
-        <p id="timer-indicator" class="toggle--indicator">OFF</p>
+        <p id="timer-indicator" class="toggle--indicator centered">OFF</p>
 
       </div>
 
       <!-- div that will contain backup button and settings -->
-      <div class=""></div>
+      <div id="options" class="options">
+        <button id="post" class="button" type="button" name="button">POST</button>
+        <button id="settings" class="button" type="button" name="button">SETTINGS</button>
+      </div>
 
     </main>
 

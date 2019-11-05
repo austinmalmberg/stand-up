@@ -11,6 +11,7 @@ class Controller {
     };
 
     this.session = new Session();
+    this.interval = setInterval(() => this.updateTimers(), 250);
   }
 
   /**
@@ -26,7 +27,7 @@ class Controller {
     // update toggle--indicator text
     const toggleContainer = toggle.parentElement;
     const toggleIndicator = toggleContainer.getElementsByClassName('toggle--indicator')[0];
-    toggleIndicator.innerText = option.id.toUpperCase();
+    toggleIndicator.innerText = option.id;
 
     if (this.timerOn())
       this.session.endActivity();
@@ -37,8 +38,6 @@ class Controller {
     // start a new activity if the timer is still on
     if (this.timerOn())
         this.session.beginActivity(this.currentOrientation());
-
-    this.updateTimers();
   }
 
   timerOn() {
@@ -70,8 +69,6 @@ const controller = new Controller();
   addOnClickListener(toggleContainer, toggle);
   controller.registerToggle(toggle);
 });
-
-setInterval(() => controller.updateTimers(), 1000);
 
 
 /******* VIEW FUNCTIONS *******/

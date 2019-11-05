@@ -1,20 +1,26 @@
 :root {
+  --default-color: black;
   --background-color: #f5f6fa;
 
   --transition-duration: 400ms;
 
-  --toggle-container-background: #f5f6fa;
-  --toggle-indicator-color: black;
+  --toggle-indicator-color: var(--default-color);
+  --toggle-background: #f5f6fa;
 
-  --orientation-toggle-background: #ff7675;
-  --orientation-toggle-background-active: #d63031;
+  --orientation-background: #ffa4a3; /* ff7675; */
+  --active-orientation-background: #d63031;
 
-  --timer-toggle-background: #74b9ff;
-  --timer-toggle-background-active: #0984e3;
+  --timer-background: #96caff; /* 74b9ff; */
+  --active-timer-background: #0984e3;
 
-  --font-family: 'Malgun Gothic';
-  --border-radius: 5px;
+  --font-family: 'Helvetica';
+  --border-radius: 0.3125rem;
   --border-width: 1px;
+
+  --option-button-color: var(--background-color);
+  --option-button-background: var(--default-color);
+
+  --standard-component-height: 20vh;
 }
 
 *, *::before, *::after {
@@ -23,43 +29,112 @@
 
 html {
   font-family: var(--font-family), Arial;
+  color: var(--default-color);
+  font-size: calc(16px + 24 * ((100vmax - 320px) / 680));
 }
 
 body {
-  text-align: center;
   overflow: hidden;
   margin: 0;
   background: var(--background-color);
+  text-transform: uppercase;
+
+  /* center main horizontally and vertically */
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 main {
-  height: 100vh;
-  width: 100vw;
+  height: 90vh;
+  width: 90vw;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+}
+
+.title--container {
+  width: 100%;
+  text-align: center;
+}
+
+h1.title {
+  text-transform: none;
+  font-variant: small-caps;
+  font-weight: normal;
+  font-size: 2rem;
+}
+
+button.button {
+  display: inline-block;
+  font-size: 1rem;
+  border: var(--border-width) solid var(--default-color);
+  border-radius: var(--border-radius);
+  transition-duration: var(--transition-duration);
+}
+
+button.button:hover {
+  color: var(--toggle-background);
+  background: var(--default-color);
+}
+
+/* GENERAL */
+
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.compact {
+  margin: 0;
+  padding: 0;
+}
+
+/* OPTIONS */
+
+.options {
+  width: 100%;
+  min-height: calc(var(--standard-component-height) / 2);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 0.4rem;
+}
+
+.options button {
+  color: var(--option-button-color);
+  background-color: var(--option-button-background);
+}
+
+.options button:hover {
+  color: var(--option-button-background);
+  background-color: var(--option-button-color);
 }
 
 /* TOGGLES */
 
 .toggle--container {
-  font-size: 1.8rem;
+  width: 100%;
+  min-height: var(--standard-component-height);
   display: flex;
   flex-direction: column;
-  background-color: var(--toggle-container-background);
+  background-color: var(--toggle-background);
   border-radius: var(--border-radius);
   border: var(--border-width) solid var(--toggle-indicator-color);
 }
 
 .toggle--container:hover .toggle--indicator {
-  color: var(--toggle-container-background);
+  color: var(--toggle-background);
   background: var(--toggle-indicator-color);
 }
 
-.toggle--indicator {
-  color: var(--toggle-indicator-color);
+p.toggle--indicator {
   margin: 0;
+  height: 50%;
+  color: var(--toggle-indicator-color);
   border-top: var(--border-width) solid var(--toggle-indicator-color);
   border-bottom-left-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
@@ -67,22 +142,26 @@ main {
 }
 
 .toggle {
-  min-width: 330px;
-  max-width: 500px;
-  margin: 0 auto;
-  width: 50%;
+  width: 100%;
+  height: 50%;
   display: flex;
-  justify-content: center;
-  align-items: center;
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
 }
 
-.toggle--option {
-  display: inline-block;
+span.toggle--option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
   width: 50%;
   opacity: 0.2;
   transition-duration: var(--transition-duration);
+}
+
+.toggle--option.active {
+  background-color: var(--timer-background);
+  opacity: 1;
 }
 
 .toggle--option.left.active {
@@ -93,24 +172,19 @@ main {
  border-top-right-radius: var(--border-radius);
 }
 
-.toggle--option.active {
-  background-color: var(--timer-toggle-background);
-  opacity: 1;
-}
-
 /* INDIVIDUAL TOGGLES */
 
 .toggle--orientation {
-  background-color: var(--orientation-toggle-background);
+  background-color: var(--orientation-background);
 }
 .toggle--orientation .active {
-  background-color: var(--orientation-toggle-background-active);
+  background-color: var(--active-orientation-background);
 }
 
 .toggle--timer {
-  background-color: var(--timer-toggle-background);
+  background-color: var(--timer-background);
 }
 
 .toggle--timer .active {
-  background-color: var(--timer-toggle-background-active);
+  background-color: var(--active-timer-background);
 }
